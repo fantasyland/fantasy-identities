@@ -1,0 +1,24 @@
+{
+  "name": "fantasy-identities",
+  "version": "0.0.0",
+  "description": "Identity data structure.",
+  "main": "identity.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/puffnfresh/fantasy-identities.git"
+  },
+  "keywords": [
+    "fantasyland",
+    "identity",
+    "monad"
+  ],
+  "author": "Brian McKenna",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/puffnfresh/fantasy-identities/issues"
+  },
+  "dependencies": {
+    "daggy": "0.0.1"
+  }
+}

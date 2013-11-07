@@ -1,4 +1,8 @@
 var daggy = require('daggy'),
+    combinators = require('fantasy-combinators'),
+
+    identity = combinators.identity,
+
     Identity = daggy.tagged('x');
 
 // Methods
@@ -17,6 +21,15 @@ Identity.prototype.ap = function(a) {
     return this.chain(function(f) {
         return a.map(f);
     });
+};
+
+Identity.prototype.sequence = function() {
+    return this.traverse(function(x) {
+        return x.traverse(identity, Identity);
+    }, this.x.constructor);
+};
+Identity.prototype.traverse = function(f, p) {
+    return p.of(f(this.x));
 };
 
 // Transformer

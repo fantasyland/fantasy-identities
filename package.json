@@ -1,12 +1,10 @@
 {
   "name": "fantasy-identities",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Identity data structure.",
-  "main": "identity.js",
-  "scripts": {},
   "repository": {
     "type": "git",
-    "url": "git://github.com/puffnfresh/fantasy-identities.git"
+    "url": "git://github.com/fantasyland/fantasy-identities.git"
   },
   "keywords": [
     "fantasyland",
@@ -16,9 +14,27 @@
   "author": "Brian McKenna",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/puffnfresh/fantasy-identities/issues"
+    "url": "https://github.com/fantasyland/fantasy-identities/issues"
   },
   "dependencies": {
-    "daggy": "0.0.1"
-  }
+    "daggy": "0.0.x",
+    "fantasy-combinators": "0.0.x"
+  },
+  "devDependencies": {
+    "grunt-cli": "0.1.9",
+    "grunt": "0.4.x",
+    "grunt-contrib-jshint": "0.6.x",
+    "grunt-contrib-nodeunit": "0.2.0",
+    "fantasy-check": "0.1.2",
+    "fantasy-helpers": "0.0.x"
+  },
+  "scripts": {
+      "readme": "$(npm bin)/emu < src/identity.js > README.md",
+      "test": "grunt"
+  },
+  "files": [
+      "fantasy-identities.js", 
+      "src/*.js"
+  ],
+  "main": "fantasy-identities.js"
 }

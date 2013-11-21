@@ -3,7 +3,6 @@ var λ = require('fantasy-check/src/adapters/nodeunit'),
     functor = require('fantasy-check/src/laws/functor'),
     monad = require('fantasy-check/src/laws/monad'),
 
-    daggy = require('daggy'),
     helpers = require('fantasy-helpers'),
     combinators = require('fantasy-combinators'),
     Identity = require('../fantasy-identities'),
@@ -16,24 +15,8 @@ var λ = require('fantasy-check/src/adapters/nodeunit'),
         };
     },
 
-    /* Id is here *only* for testing purposes */
-    Id = daggy.tagged('value'),
-
-    isId = helpers.isInstanceOf(Id),
     isIdentity = helpers.isInstanceOf(Identity),
-    isIdOf = helpers.isInstanceOf(idOf),
     isIdentityOf = helpers.isInstanceOf(identityOf);
-
-Id.of = Id;
-Id.prototype.traverse = function(f, p) {
-    return p.of(f(this.value));
-};
-
-function idOf(type) {
-    var self = this.getInstance(this, idOf);
-    self.type = type;
-    return self;
-}
 
 function identityOf(type) {
     var self = this.getInstance(this, identityOf);
@@ -42,10 +25,6 @@ function identityOf(type) {
 }
 
 λ = λ
-    .property('idOf', idOf)
-    .method('arb', isIdOf, function(a, b) {
-        return Id.of(this.arb(a.type, b - 1));
-    })
     .property('identityOf', identityOf)
     .method('arb', isIdentityOf, function(a, b) {
         return Identity.of(this.arb(a.type, b - 1));
@@ -77,21 +56,21 @@ exports.identity = {
     ),
     'when testing sequence should return correct type': λ.check(
         function(a) {
-            return isId(a.sequence());
+            return isIdentity(a.sequence());
         },
-        [λ.identityOf(λ.idOf(Number))]
+        [λ.identityOf(λ.identityOf(Number))]
     ),
     'when testing sequence should return correct nested type': λ.check(
         function(a) {
-            return isIdentity(a.sequence().value);
+            return isIdentity(a.sequence().x);
         },
-        [λ.identityOf(λ.idOf(Number))]
+        [λ.identityOf(λ.identityOf(Number))]
     ),
     'when testing sequence should return correct value': λ.check(
         function(a) {
-            return a.sequence().value.x === a.x.value;
+            return a.sequence().x.x === a.x.x;
         },
-        [λ.identityOf(λ.idOf(Number))]
+        [λ.identityOf(λ.identityOf(Number))]
     )
 };
 

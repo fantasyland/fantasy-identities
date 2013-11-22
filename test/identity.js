@@ -24,6 +24,10 @@ function identityOf(type) {
     return self;
 }
 
+function run(a) {
+    return a.run;
+}
+
 λ = λ
     .property('identityOf', identityOf)
     .method('arb', isIdentityOf, function(a, b) {
@@ -33,19 +37,22 @@ function identityOf(type) {
 exports.identity = {
 
     // Applicative Functor tests
-    'Identity (Applicative)': applicative.identity(λ)(Identity),
-    'Composition (Applicative)': applicative.composition(λ)(Identity),
-    'Homomorphism (Applicative)': applicative.homomorphism(λ)(Identity),
-    'Interchange (Applicative)': applicative.interchange(λ)(Identity),
+    'All (Applicative)': applicative.laws(λ)(Identity, identity),
+    'Identity (Applicative)': applicative.identity(λ)(Identity, identity),
+    'Composition (Applicative)': applicative.composition(λ)(Identity, identity),
+    'Homomorphism (Applicative)': applicative.homomorphism(λ)(Identity, identity),
+    'Interchange (Applicative)': applicative.interchange(λ)(Identity, identity),
 
     // Functor tests
-    'Identity (Functor)': functor.identity(λ)(Identity.of),
-    'Composition (Functor)': functor.composition(λ)(Identity.of),
+    'All (Functor)': functor.laws(λ)(Identity.of, identity),
+    'Identity (Functor)': functor.identity(λ)(Identity.of, identity),
+    'Composition (Functor)': functor.composition(λ)(Identity.of, identity),
 
     // Monad tests
-    'Left Identity (Monad)': monad.leftIdentity(λ)(Identity),
-    'Right Identity (Monad)': monad.rightIdentity(λ)(Identity),
-    'Associativity (Monad)': monad.associativity(λ)(Identity),
+    'All (Monad)': monad.laws(λ)(Identity, identity),
+    'Left Identity (Monad)': monad.leftIdentity(λ)(Identity, identity),
+    'Right Identity (Monad)': monad.rightIdentity(λ)(Identity, identity),
+    'Associativity (Monad)': monad.associativity(λ)(Identity, identity),
 
     // Manual tests    
     'when testing traverse should return correct value': λ.check(
@@ -77,17 +84,20 @@ exports.identity = {
 exports.identityT = {
 
     // Applicative Functor tests
-    'Identity (Applicative)': applicative.identity(λ)(Identity.IdentityT(Identity)),
-    'Composition (Applicative)': applicative.composition(λ)(Identity.IdentityT(Identity)),
-    'Homomorphism (Applicative)': applicative.homomorphism(λ)(Identity.IdentityT(Identity)),
-    'Interchange (Applicative)': applicative.interchange(λ)(Identity.IdentityT(Identity)),
+    'All (Applicative)': applicative.laws(λ)(Identity.IdentityT(Identity), run),
+    'Identity (Applicative)': applicative.identity(λ)(Identity.IdentityT(Identity), run),
+    'Composition (Applicative)': applicative.composition(λ)(Identity.IdentityT(Identity), run),
+    'Homomorphism (Applicative)': applicative.homomorphism(λ)(Identity.IdentityT(Identity), run),
+    'Interchange (Applicative)': applicative.interchange(λ)(Identity.IdentityT(Identity), run),
 
     // Functor tests
-    'Identity (Functor)': functor.identity(λ)(Identity.IdentityT(Identity).of),
-    'Composition (Functor)': functor.composition(λ)(Identity.IdentityT(Identity).of),
+    'All (Functor)': functor.laws(λ)(Identity.IdentityT(Identity).of, run),
+    'Identity (Functor)': functor.identity(λ)(Identity.IdentityT(Identity).of, run),
+    'Composition (Functor)': functor.composition(λ)(Identity.IdentityT(Identity).of, run),
 
     // Monad tests
-    'Left Identity (Monad)': monad.leftIdentity(λ)(Identity.IdentityT(Identity)),
-    'Right Identity (Monad)': monad.rightIdentity(λ)(Identity.IdentityT(Identity)),
-    'Associativity (Monad)': monad.associativity(λ)(Identity.IdentityT(Identity))
+    'All (Monad)': monad.laws(λ)(Identity.IdentityT(Identity), run),
+    'Left Identity (Monad)': monad.leftIdentity(λ)(Identity.IdentityT(Identity), run),
+    'Right Identity (Monad)': monad.rightIdentity(λ)(Identity.IdentityT(Identity), run),
+    'Associativity (Monad)': monad.associativity(λ)(Identity.IdentityT(Identity), run)
 };

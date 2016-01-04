@@ -1,9 +1,7 @@
-var daggy = require('daggy'),
-    combinators = require('fantasy-combinators'),
+const daggy = require('daggy');
+const {identity} = require('fantasy-combinators');
 
-    identity = combinators.identity,
-
-    Identity = daggy.tagged('x');
+const Identity = daggy.tagged('x');
 
 // Methods
 Identity.of = Identity;
@@ -13,46 +11,32 @@ Identity.prototype.chain = function(f) {
 
 // Derived
 Identity.prototype.map = function(f) {
-    return this.chain(function(a) {
-        return Identity.of(f(a));
-    });
+    return this.chain((a) => Identity.of(f(a)));
 };
 Identity.prototype.ap = function(a) {
-    return this.chain(function(f) {
-        return a.map(f);
-    });
+    return this.chain((f) => a.map(f));
 };
 
-Identity.prototype.sequence = function() {
-    return this.traverse(function(x) {
-        return x.traverse(identity, Identity);
-    }, this.x.constructor);
+Identity.prototype.sequence = function(p) {
+    return this.traverse(identity, p);
 };
 Identity.prototype.traverse = function(f, p) {
-    return p.of(f(this.x));
+    return f(this.x).map(Identity.of);
 };
 
 // Transformer
-Identity.IdentityT = function(M) {
-    var IdentityT = daggy.tagged('run');
+Identity.IdentityT = (M) => {
+    const IdentityT = daggy.tagged('run');
     IdentityT.lift = IdentityT;
-    IdentityT.of = function(a) {
-        return IdentityT(M.of(a));
-    };
+    IdentityT.of = (a) => IdentityT(M.of(a));
     IdentityT.prototype.chain = function(f) {
-        return IdentityT(this.run.chain(function(x) {
-            return f(x).run;
-        }));
+        return IdentityT(this.run.chain((x) => f(x).run));
     };
     IdentityT.prototype.map = function(f) {
-        return this.chain(function(a) {
-            return IdentityT.of(f(a));
-        });
+        return this.chain((a) => IdentityT.of(f(a)));
     };
     IdentityT.prototype.ap = function(a) {
-        return this.chain(function(f) {
-            return a.map(f);
-        });
+        return this.chain((f) => a.map(f));
     };
     return IdentityT;
 };

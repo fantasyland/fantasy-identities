@@ -1,4 +1,4 @@
-var Identity = require('./src/identity');
+const Identity = require('./src/identity');
 
 if (typeof module != 'undefined')
     module.exports = Identity;

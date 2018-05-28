@@ -1,9 +1,7 @@
 # Fantasy Identities
 
-This library implements purely functional, monadic identities.
+This project is no longer developed or maintained.
+Consider [sanctuary-identity][1] as a replacement.
 
-## Fantasy Land Compatible
 
-[
-  ![](https://raw.github.com/fantasyland/fantasy-land/master/logo.png)
-](https://github.com/fantasyland/fantasy-land)
+[1]: https://github.com/sanctuary-js/sanctuary-identity
